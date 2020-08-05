@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'question.dart';
 
 void main() => runApp(PersonalityQuizApp());
 
-class PersonalityQuizApp extends StatefulWidget{
+class PersonalityQuizApp extends StatefulWidget {
   @override
-  PersonalityQuizState createState(){
+  PersonalityQuizState createState() {
     return PersonalityQuizState();
   }
 }
@@ -12,14 +13,18 @@ class PersonalityQuizApp extends StatefulWidget{
 class PersonalityQuizState extends State<PersonalityQuizApp> {
   int _questionIndex = 0;
   var _allQuestions = ["Question 1", "Question 2", "Question 3"];
-  void _onAnswerButtonPressed(){
-    if(_questionIndex <= (_allQuestions.length - 1)){
-      _questionIndex =_questionIndex + 1;
-    }
-    else if(_questionIndex ==_allQuestions.length){
-      _questionIndex = 0;
+  void _onAnswerButtonPressed() {
+    if (_questionIndex < (_allQuestions.length - 1)) {
+      setState(() {
+        _questionIndex = _questionIndex + 1;
+      });
+    } else if (_questionIndex == (_allQuestions.length - 1) ) {
+      setState(() {
+        _questionIndex = 0;
+      });
     }
   }
+
   @override
   Widget build(BuildContext buildContext) {
     return MaterialApp(
@@ -30,9 +35,10 @@ class PersonalityQuizState extends State<PersonalityQuizApp> {
         ),
         body: Column(
           children: <Widget>[
-            Text('Click on the Answer button to print output in debug console.'),
+            Question(
+                _allQuestions[_questionIndex]),
             RaisedButton(
-              child: Text('Answer'),
+              child: Text('Tap me'),
               onPressed: _onAnswerButtonPressed,
             ),
           ],
