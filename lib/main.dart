@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(PersonalityTest());
+void main() => runApp(PersonalityQuizApp());
 
-class PersonalityTest extends StatelessWidget {
+class PersonalityQuizApp extends StatefulWidget{
+  @override
+  PersonalityQuizState createState(){
+    return PersonalityQuizState();
+  }
+}
+
+class PersonalityQuizState extends State<PersonalityQuizApp> {
+  int _questionIndex = 0;
+  var _allQuestions = ["Question 1", "Question 2", "Question 3"];
+  void _onAnswerButtonPressed(){
+    if(_questionIndex <= (_allQuestions.length - 1)){
+      _questionIndex =_questionIndex + 1;
+    }
+    else if(_questionIndex ==_allQuestions.length){
+      _questionIndex = 0;
+    }
+  }
   @override
   Widget build(BuildContext buildContext) {
     return MaterialApp(
@@ -16,7 +33,7 @@ class PersonalityTest extends StatelessWidget {
             Text('Click on the Answer button to print output in debug console.'),
             RaisedButton(
               child: Text('Answer'),
-              onPressed: () => print('Answer button has been pressed!'),
+              onPressed: _onAnswerButtonPressed,
             ),
           ],
         ),
