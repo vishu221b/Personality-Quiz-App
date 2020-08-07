@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Answer extends StatelessWidget {
-  final Map<String, Object> answer;
+  final String answer;
   final Function thisOne;
 
   Answer({this.answer, this.thisOne});
@@ -9,9 +9,10 @@ class Answer extends StatelessWidget {
   @override
   Widget build(BuildContext buildContext) {
     return Container(
+      width: double.infinity,
       child: RaisedButton(
-        child: Text(answer['value']),
-        onPressed: thisOne,
+          child: Text(answer),
+          onPressed: thisOne,
       ),
     );
   }

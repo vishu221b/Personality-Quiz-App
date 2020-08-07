@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'question.dart';
 import 'answers.dart';
+import 'result.dart';
 
 void main() => runApp(PersonalityQuizApp());
 
@@ -13,6 +14,7 @@ class PersonalityQuizApp extends StatefulWidget {
 }
 
 class PersonalityQuizState extends State<PersonalityQuizApp> {
+  int _totalScore = 0;
   int _questionIndex = 0;
   var _allQuestionAnswers = [
     {
@@ -44,9 +46,17 @@ class PersonalityQuizState extends State<PersonalityQuizApp> {
     }
   ];
 
-  void _onAnswerButtonPressed() {
-    if (_questionIndex < (_allQuestionAnswers.length - 1)) {
+  void resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _onAnswerButtonPressed(int _score) {
+    if (_questionIndex < (_allQuestionAnswers.length)) {
       setState(() {
+        _totalScore += _score;
         _questionIndex = _questionIndex + 1;
       });
     } else if (_questionIndex == (_allQuestionAnswers.length - 1)) {
@@ -64,14 +74,24 @@ class PersonalityQuizState extends State<PersonalityQuizApp> {
         appBar: AppBar(
           title: Text('Personality Quiz'),
         ),
-        body: Column(
-          children: <Widget>[
-            Question(_allQuestionAnswers[_questionIndex]['question']),
-            Answer(
-                answer: _allQuestionAnswers[_questionIndex]['answers'],
-                thisOne: _onAnswerButtonPressed),
-          ],
-        ),
+        body: (_questionIndex < (_allQuestionAnswers.length))
+            ? Column(
+                children: <Widget>[
+                  Question(_allQuestionAnswers[_questionIndex]['question']),
+                  ...(_allQuestionAnswers[_questionIndex]['answers']
+                          as List<Map<String, Object>>)
+                      .map((answer) =>
+                    Answer(
+                        answer: answer['value'],
+                        thisOne: () => _onAnswerButtonPressed(answer['score'])
+                        )
+                  ).toList(),
+                ],
+              )
+            : FinalResult(
+                score: _totalScore,
+                resetQuizCallback: resetQuiz,
+              ),
       ),
     );
   }
